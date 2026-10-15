@@ -1,6 +1,6 @@
 {
-  "name": "monorepo-helper",
-  "displayName": "Monorepo Helper",
+  "name": "dependency-drift",
+  "displayName": "Dependency Drift",
   "description": "Detects npm, yarn, pnpm, bun, Nx, Turborepo, Lerna and Rush workspaces. Browse packages, run scripts, and view the dependency graph.",
   "version": "0.1.0",
   "publisher": "syedharis14",
@@ -163,7 +163,7 @@
       ]
     },
     "configuration": {
-      "title": "Monorepo Helper",
+      "title": "Dependency Drift",
       "properties": {
         "monorepoHelper.packageManager": {
           "type": "string",

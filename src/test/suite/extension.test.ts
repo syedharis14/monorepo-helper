@@ -1,9 +1,9 @@
 import * as assert from "node:assert";
 import * as vscode from "vscode";
 
-suite("Monorepo Helper (integration)", () => {
+suite("Dependency Drift (integration)", () => {
   test("activates and registers commands", async () => {
-    const ext = vscode.extensions.getExtension("syedharis14.monorepo-helper");
+    const ext = vscode.extensions.getExtension("syedharis14.dependency-drift");
     assert.ok(ext, "extension not found");
     await ext!.activate();
     const commands = await vscode.commands.getCommands(true);

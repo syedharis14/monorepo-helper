@@ -4,7 +4,7 @@ import { PackagesTreeProvider } from "./views/packagesTree";
 import { WorkspaceService } from "./workspaceService";
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
-  const output = vscode.window.createOutputChannel("Monorepo Helper");
+  const output = vscode.window.createOutputChannel("Dependency Drift");
   const service = new WorkspaceService(output);
   const tree = new PackagesTreeProvider(service);
 

@@ -1,4 +1,4 @@
-# Monorepo Helper
+# Dependency Drift
 
 A VS Code extension that understands your monorepo no matter which tool built it.
 
