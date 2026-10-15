@@ -57,7 +57,11 @@ export function layout(graph: DependencyGraph, measure: (id: string) => number) 
   return { positions: pos, width: x - LAYER_GAP + PAD, height: maxH };
 }
 
-/** Rough text width so we don't need a canvas measurement pass. */
-export function estimateWidth(text: string): number {
-  return Math.max(120, Math.round(text.length * 7.2) + 48);
+/**
+ * Rough node width so we don't need a canvas measurement pass: the 12px monospace
+ * label plus the right-aligned 10px version, so the two never overlap.
+ */
+export function estimateWidth(label: string, version?: string): number {
+  const versionW = version ? 14 + version.length * 6.2 : 0;
+  return Math.max(120, Math.round(label.length * 7.2 + versionW) + 40);
 }

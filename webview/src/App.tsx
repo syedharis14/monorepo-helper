@@ -75,7 +75,13 @@ function Graph({ folder }: { folder: FolderGraph }) {
   }, [selected, view]);
 
   const { positions, width, height } = useMemo(
-    () => layout(graph, (id) => estimateWidth(id)),
+    () => {
+      const byId = new Map(graph.nodes.map((n) => [n.id, n]));
+      return layout(graph, (id) => {
+        const n = byId.get(id);
+        return estimateWidth((n?.private ? "🔒 " : "") + id, n?.version);
+      });
+    },
     [graph],
   );
 
