@@ -1,0 +1,1 @@
+{ "name": "deep", "version": "2.0.0", "peerDependencies": { "core": "*" } }

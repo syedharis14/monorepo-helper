@@ -1,0 +1,1 @@
+{ "name": "pnpm-nx-root", "private": true, "packageManager": "pnpm@9.1.0", "scripts": { "build": "nx run-many -t build" } }

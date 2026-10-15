@@ -1,0 +1,235 @@
+{
+  "name": "monorepo-helper",
+  "displayName": "Monorepo Helper",
+  "description": "Detects npm, yarn, pnpm, bun, Nx, Turborepo, Lerna and Rush workspaces. Browse packages, run scripts, and view the dependency graph.",
+  "version": "0.1.0",
+  "publisher": "syedharis14",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/syedharis14/monorepo-helper"
+  },
+  "bugs": {
+    "url": "https://github.com/syedharis14/monorepo-helper/issues"
+  },
+  "homepage": "https://github.com/syedharis14/monorepo-helper#readme",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "monorepo",
+    "workspaces",
+    "pnpm",
+    "nx",
+    "turborepo",
+    "lerna",
+    "rush",
+    "yarn",
+    "bun"
+  ],
+  "main": "./dist/extension.js",
+  "browser": "./dist/extension.js",
+  "activationEvents": [
+    "workspaceContains:pnpm-workspace.yaml",
+    "workspaceContains:nx.json",
+    "workspaceContains:turbo.json",
+    "workspaceContains:lerna.json",
+    "workspaceContains:rush.json",
+    "workspaceContains:package.json"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "monorepoHelper",
+          "title": "Monorepo",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "monorepoHelper": [
+        {
+          "id": "monorepoHelper.packages",
+          "name": "Packages",
+          "contextualTitle": "Monorepo Packages"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "monorepoHelper.packages",
+        "contents": "No monorepo detected in this workspace.\nSupported: npm, yarn, pnpm, bun workspaces, Nx, Turborepo, Lerna, Rush.\n[Refresh](command:monorepoHelper.refresh)"
+      }
+    ],
+    "commands": [
+      {
+        "command": "monorepoHelper.refresh",
+        "title": "Refresh",
+        "category": "Monorepo",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "monorepoHelper.showGraph",
+        "title": "Show Dependency Graph",
+        "category": "Monorepo",
+        "icon": "$(type-hierarchy)"
+      },
+      {
+        "command": "monorepoHelper.runScript",
+        "title": "Run Script",
+        "category": "Monorepo",
+        "icon": "$(play)"
+      },
+      {
+        "command": "monorepoHelper.openPackageJson",
+        "title": "Open package.json",
+        "category": "Monorepo",
+        "icon": "$(json)"
+      },
+      {
+        "command": "monorepoHelper.revealInExplorer",
+        "title": "Reveal in Explorer",
+        "category": "Monorepo"
+      },
+      {
+        "command": "monorepoHelper.openTerminal",
+        "title": "Open Terminal Here",
+        "category": "Monorepo",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "monorepoHelper.quickOpenPackage",
+        "title": "Go to Package...",
+        "category": "Monorepo"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "monorepoHelper.showGraph",
+          "when": "view == monorepoHelper.packages",
+          "group": "navigation@1"
+        },
+        {
+          "command": "monorepoHelper.refresh",
+          "when": "view == monorepoHelper.packages",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "monorepoHelper.openPackageJson",
+          "when": "view == monorepoHelper.packages && viewItem == package",
+          "group": "inline@1"
+        },
+        {
+          "command": "monorepoHelper.openTerminal",
+          "when": "view == monorepoHelper.packages && viewItem == package",
+          "group": "inline@2"
+        },
+        {
+          "command": "monorepoHelper.revealInExplorer",
+          "when": "view == monorepoHelper.packages && viewItem == package",
+          "group": "1_nav"
+        },
+        {
+          "command": "monorepoHelper.runScript",
+          "when": "view == monorepoHelper.packages && viewItem == script",
+          "group": "inline@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "monorepoHelper.runScript",
+          "when": "false"
+        },
+        {
+          "command": "monorepoHelper.openPackageJson",
+          "when": "false"
+        },
+        {
+          "command": "monorepoHelper.revealInExplorer",
+          "when": "false"
+        },
+        {
+          "command": "monorepoHelper.openTerminal",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Monorepo Helper",
+      "properties": {
+        "monorepoHelper.packageManager": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "npm",
+            "yarn",
+            "pnpm",
+            "bun"
+          ],
+          "default": "auto",
+          "description": "Package manager used to run scripts. 'auto' picks from the lockfile / packageManager field."
+        },
+        "monorepoHelper.excludeGlobs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "**/node_modules/**",
+            "**/dist/**",
+            "**/.git/**"
+          ],
+          "description": "Globs ignored when scanning for package.json files."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "node esbuild.js --production",
+    "watch": "node esbuild.js --watch",
+    "typecheck": "tsc --noEmit -p . && tsc --noEmit -p webview",
+    "lint": "eslint src webview/src",
+    "test:unit": "tsx --test \"src/**/*.unit.test.ts\"",
+    "test:vscode": "node esbuild.js && node ./out/test/runTest.js",
+    "pretest:vscode": "tsc -p tsconfig.test.json",
+    "test": "npm run test:unit",
+    "package": "vsce package --no-dependencies",
+    "publish:vsce": "vsce publish --no-dependencies",
+    "publish:ovsx": "ovsx publish --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^20.14.0",
+    "@types/picomatch": "^3.0.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/vscode": "^1.90.0",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
+    "@vscode/test-electron": "^2.4.0",
+    "@vscode/vsce": "^2.29.0",
+    "esbuild": "^0.21.5",
+    "eslint": "^8.57.0",
+    "glob": "^10.4.1",
+    "mocha": "^10.4.0",
+    "ovsx": "^0.9.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsx": "^4.15.6",
+    "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "jsonc-parser": "^3.2.1",
+    "picomatch": "^4.0.2",
+    "yaml": "^2.4.5"
+  }
+}

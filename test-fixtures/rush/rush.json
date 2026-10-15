@@ -1,0 +1,9 @@
+{
+  // Rush config with comments
+  "rushVersion": "5.100.0",
+  "pnpmVersion": "8.15.0",
+  "projects": [
+    { "packageName": "portal", "projectFolder": "apps/portal" },
+    { "packageName": "shared", "projectFolder": "libs/shared", },
+  ]
+}
